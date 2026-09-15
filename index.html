@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#332331">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="15天打卡">
+    <meta name="description" content="将小红书《小基数半月瘦十斤霸道法（含脸部对比）》整理成15天饮食打卡工具。">
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="icon" href="./icons/icon-192.png">
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+    <link rel="stylesheet" href="./styles.css?v=20260915a">
+    <title>小基数15天｜霸道食谱打卡</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand-mark" aria-hidden="true"><strong>15</strong><span>DAY</span></div>
+        <div class="brand-copy">
+          <p>小基数半月计划</p>
+          <h1>霸道食谱打卡</h1>
+        </div>
+        <button class="icon-button" id="installHelpBtn" type="button" aria-label="查看安装方法">⇧</button>
+      </header>
+
+      <main>
+        <section class="view active" data-view="today" id="todayView">
+          <article class="hero-card card">
+            <div>
+              <span class="eyebrow" id="phaseLabel">第 1 天</span>
+              <h2 id="dateRange">—</h2>
+              <p id="progressText">从今天开始，按身体情况调整</p>
+              <button class="date-button" id="changeStartBtn" type="button">设置开始日期</button>
+            </div>
+            <div class="progress-orbit" id="progressOrbit" aria-label="15天完成进度">
+              <strong id="progressValue">0%</strong>
+              <small>完成天数</small>
+            </div>
+          </article>
+
+          <div class="day-grid" id="dayGrid" aria-label="选择第几天"></div>
+
+          <article class="plan-card card">
+            <div class="plan-head">
+              <div>
+                <span class="mode-pill">每天重复同一套</span>
+                <h2 id="dayTitle">第 1 天</h2>
+                <p id="dayDate">—</p>
+              </div>
+              <div class="day-icon" aria-hidden="true">🥚</div>
+            </div>
+
+            <div class="meal-list" id="mealList"></div>
+
+            <div class="day-footer">
+              <p>有氧是原帖里的可选项，不计入当天完成度。</p>
+              <strong id="dayCount">0/7</strong>
+            </div>
+          </article>
+
+          <article class="weight-card card">
+            <div class="section-heading">
+              <div>
+                <span class="eyebrow">可选记录</span>
+                <h2 id="weightTitle">第 1 天体重</h2>
+              </div>
+              <div class="unit-switch" role="group" aria-label="体重单位">
+                <button type="button" data-unit="jin" class="active">斤</button>
+                <button type="button" data-unit="kg">kg</button>
+              </div>
+            </div>
+            <div id="weightContent"></div>
+          </article>
+
+          <div class="safety-strip">
+            <span aria-hidden="true">!</span>
+            <p><b>“15天瘦10斤”是原作者个人自述，不是效果承诺。</b>出现头晕、发抖、冷汗、心慌或明显乏力，请停止限制饮食并及时求助。</p>
+          </div>
+        </section>
+
+        <section class="view" data-view="progress" id="progressView" hidden>
+          <div class="view-title">
+            <span class="eyebrow">只比较自己的变化</span>
+            <h2>15天进度</h2>
+            <p id="progressSubtitle">完成 0/15 天</p>
+          </div>
+
+          <div class="metric-grid">
+            <article class="metric-card card"><span>起始体重</span><strong id="startWeight">—</strong><small id="startWeightDay">尚未记录</small></article>
+            <article class="metric-card card"><span>最近体重</span><strong id="latestWeight">—</strong><small id="weightDelta">等待第二次记录</small></article>
+          </div>
+
+          <div class="progress-list" id="progressList"></div>
+        </section>
+
+        <section class="view" data-view="method" id="methodView" hidden>
+          <div class="view-title">
+            <span class="eyebrow">原帖内容整理</span>
+            <h2>每天怎么吃</h2>
+            <p>下面区分“原帖规则”和“安全提示”，不把补充建议冒充成原文。</p>
+          </div>
+
+          <div class="method-stack">
+            <article class="method-card breakfast">
+              <b>早</b><div><h3>一个鸡蛋＋一杯无糖饮品</h3><p>原图写作“一杯无糖 drink”。</p></div>
+            </article>
+            <article class="method-card lunch">
+              <b>中</b><div><h3>两种午餐，二选一</h3><p>① 麦门双吉汉堡，去芝士、去酱；② 两拳蔬菜＋一拳肉＋一拳饭。肉选鸡肉、牛肉、鱼肉或虾，菜选择看得见原材料的。</p></div>
+            </article>
+            <article class="method-card snack">
+              <b>下</b><div><h3>冰拿铁＋适量坚果</h3><p>原帖建议加冰，一下午慢慢喝；嘴馋可吃纯度高的黑巧或溏心蛋。</p></div>
+            </article>
+            <article class="method-card dinner">
+              <b>晚</b><div><h3>小香蕉／鸡蛋／玉米，三选一</h3><p>原图写作“baby蕉／鸡蛋／玉米”。</p></div>
+            </article>
+          </div>
+
+          <article class="info-card card">
+            <h3>原帖配套要求</h3>
+            <ul>
+              <li>每天喝 1.5L 水。</li>
+              <li>23:30 前睡觉，睡前拉伸。</li>
+              <li>想让线条更明显，可增加有氧运动。</li>
+              <li>原作者称可根据身体情况适度调整。</li>
+            </ul>
+          </article>
+
+          <article class="info-card card supplement-card">
+            <h3>作者在评论区的补充</h3>
+            <ul>
+              <li>双吉可以换三明治，但不要选酱太多的。</li>
+              <li>甜品或奶茶一周一次可以，作者也会偶尔吃。</li>
+            </ul>
+            <a class="source-link" href="https://www.xiaohongshu.com/explore/69d8c6320000000022026dc7" target="_blank" rel="noopener">查看小红书原帖 ↗</a>
+          </article>
+
+          <article class="info-card card safety-card">
+            <h3>开始前请先看</h3>
+            <p>原帖没有提供总热量、蛋白质、身高体重和健康状况，因此无法确认这套食谱是否满足你的营养需要。美国 CDC 建议更可持续的减重速度通常约为每周 1–2 磅（约 0.45–0.9 kg）。</p>
+            <p>未成年人、孕期或哺乳期、体重过低、有低血糖或进食障碍史、正在使用降糖药，或有需要饮食管理的疾病者，不应自行照搬。</p>
+            <a class="source-link" href="https://www.cdc.gov/healthy-weight-growth/losing-weight/index.html" target="_blank" rel="noopener">查看 CDC 健康减重说明 ↗</a>
+          </article>
+
+          <article class="data-card card">
+            <div>
+              <h3>数据只存在本机</h3>
+              <p>打卡、日期和体重不会上传。换手机、换浏览器或清理 Safari 数据后不会自动恢复。</p>
+            </div>
+            <button class="text-button danger" id="clearDataBtn" type="button">清空全部数据</button>
+          </article>
+        </section>
+      </main>
+
+      <nav class="bottom-nav" aria-label="主要导航">
+        <button type="button" class="active" data-tab="today"><span>◉</span>打卡</button>
+        <button type="button" data-tab="progress"><span>⌁</span>进度</button>
+        <button type="button" data-tab="method"><span>◎</span>方法</button>
+      </nav>
+    </div>
+
+    <dialog id="startDialog">
+      <form class="dialog-card" id="startForm" method="dialog">
+        <button class="dialog-close" data-close-dialog="startDialog" type="button" aria-label="关闭">×</button>
+        <span class="dialog-kicker">15天从哪天开始</span>
+        <h2>设置开始日期</h2>
+        <label class="date-field">开始日期<input id="startDateInput" type="date" required></label>
+        <button class="primary-button wide" type="submit">保存日期</button>
+        <p>修改后会保留已打卡内容，只重新对应日期。</p>
+      </form>
+    </dialog>
+
+    <dialog id="installDialog">
+      <div class="dialog-card">
+        <button class="dialog-close" data-close-dialog="installDialog" type="button" aria-label="关闭">×</button>
+        <div class="share-icon" aria-hidden="true">⇧</div>
+        <h2>添加到 iPhone 主屏幕</h2>
+        <ol>
+          <li>用 Safari 打开这个网页</li>
+          <li>点底部“分享”按钮</li>
+          <li>向下找到“添加到主屏幕”</li>
+          <li>点右上角“添加”</li>
+        </ol>
+        <p>如果从微信打开，请先选择“在 Safari 中打开”。</p>
+      </div>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="./app.js?v=20260915a" defer></script>
+  </body>
+</html>

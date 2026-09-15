@@ -1,0 +1,16 @@
+{
+  "name": "小基数15天｜霸道食谱打卡",
+  "short_name": "15天打卡",
+  "description": "将小红书《小基数半月瘦十斤霸道法（含脸部对比）》整理成15天饮食打卡工具。",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f7f2ee",
+  "theme_color": "#332331",
+  "icons": [
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
