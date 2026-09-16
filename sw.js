@@ -1,10 +1,10 @@
-const CACHE_NAME = "small-base-15-v3-calories";
+const CACHE_NAME = "small-base-15-v4-calorie-breakdown";
 const BASE = new URL("./", self.location.href);
 const ASSETS = [
   BASE.href,
   new URL("index.html", BASE).href,
-  new URL("styles.css?v=20260916b", BASE).href,
-  new URL("app.js?v=20260916b", BASE).href,
+  new URL("styles.css?v=20260916c", BASE).href,
+  new URL("app.js?v=20260916c", BASE).href,
   new URL("manifest.webmanifest", BASE).href,
   new URL("icons/icon-192.png", BASE).href,
   new URL("icons/icon-512.png", BASE).href,

@@ -100,6 +100,7 @@ button { color: inherit; }
 .detail-choice > small { display: block; margin-bottom: 6px; color: var(--muted); font-size: 8px; font-weight: 750; }
 .choice-row.compact { padding: 0; }
 .choice-row.compact .choice-chip span { min-width: 50px; text-align: center; }
+.calorie-components { margin: -3px 12px 12px 76px; color: #796c74; font-size: 8px; line-height: 1.45; }
 .calorie-summary { margin-top: 16px; padding: 16px; border: 1px solid rgba(104,68,95,.1); border-radius: 19px; background: linear-gradient(145deg, #fff7ee, #f9edf3); }
 .calorie-total { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .calorie-total > span { color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .08em; }
@@ -201,5 +202,5 @@ dialog::backdrop { background: rgba(35,23,33,.47); backdrop-filter: blur(5px); }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
 @media (min-width: 541px) { body { padding: 18px 0; } .app-shell { border-radius: 34px; } }
-@media (max-width: 360px) { .hero-card { padding: 19px; } .progress-orbit { width: 70px; height: 70px; flex-basis: 70px; } .choice-row { padding-left: 47px; } .choice-row.compact { padding-left: 0; } .detail-choice { padding-left: 47px; } }
+@media (max-width: 360px) { .hero-card { padding: 19px; } .progress-orbit { width: 70px; height: 70px; flex-basis: 70px; } .choice-row { padding-left: 47px; } .choice-row.compact { padding-left: 0; } .detail-choice, .calorie-components { padding-left: 0; margin-left: 47px; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; } }

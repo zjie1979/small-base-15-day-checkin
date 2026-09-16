@@ -15,7 +15,7 @@ const FOOD_TASK_IDS = new Set(["breakfast", "lunch", "snack", "dinner"]);
 
 // 热量均为估算值；份量口径和来源在“方法”页公开说明。
 const CALORIES = {
-  breakfast: 72,
+  breakfast: { egg: 72, drinks: { plain: 0, soy: 83, milk: 153 } },
   lunch: {
     burger: 310,
     fists: { chicken: 510, beef: 595, fish: 450, shrimp: 444 }
@@ -41,6 +41,12 @@ const PROTEIN_CHOICES = [
   { value: "beef", label: "牛肉", calories: 595 },
   { value: "fish", label: "鱼肉", calories: 450 },
   { value: "shrimp", label: "虾", calories: 444 }
+];
+
+const DRINK_CHOICES = [
+  { value: "plain", label: "无糖茶／黑咖啡", calories: 0 },
+  { value: "soy", label: "无糖豆浆 250ml", calories: 83 },
+  { value: "milk", label: "纯牛奶 250ml", calories: 153 }
 ];
 
 const SNACK_EXTRA_CHOICES = [
@@ -121,12 +127,12 @@ function completedDays() {
 }
 
 function choiceValue(day, name) {
-  const defaults = { lunch: "burger", protein: "chicken", snackExtra: "none", dinner: "banana" };
+  const defaults = { drink: "plain", lunch: "burger", protein: "chicken", snackExtra: "none", dinner: "banana" };
   return day.choices[name] || defaults[name];
 }
 
 function taskCalories(taskId, day) {
-  if (taskId === "breakfast") return CALORIES.breakfast;
+  if (taskId === "breakfast") return CALORIES.breakfast.egg + CALORIES.breakfast.drinks[choiceValue(day, "drink")];
   if (taskId === "lunch") {
     const lunch = choiceValue(day, "lunch");
     return lunch === "fists" ? CALORIES.lunch.fists[choiceValue(day, "protein")] : CALORIES.lunch.burger;
@@ -190,6 +196,11 @@ function choiceMarkup(task, day) {
 }
 
 function detailChoiceMarkup(task, day) {
+  if (task.id === "breakfast") {
+    const selected = choiceValue(day, "drink");
+    return `<div class="detail-choice"><small>无糖饮品选择</small><div class="choice-row compact" role="radiogroup" aria-label="早餐无糖饮品选择">${DRINK_CHOICES.map((choice) => `
+      <label class="choice-chip"><input type="radio" name="drink-${selectedDay}" data-detail-choice="drink" value="${choice.value}" ${selected === choice.value ? "checked" : ""}><span>${choice.label}<em>${choice.calories ? `+${choice.calories}` : "0"} kcal</em></span></label>`).join("")}</div></div>`;
+  }
   if (task.id === "lunch" && choiceValue(day, "lunch") === "fists") {
     const selected = choiceValue(day, "protein");
     return `<div class="detail-choice"><small>一拳肉选择（总餐热量）</small><div class="choice-row compact" role="radiogroup" aria-label="一拳肉选择">${PROTEIN_CHOICES.map((choice) => `
@@ -199,6 +210,24 @@ function detailChoiceMarkup(task, day) {
     const selected = choiceValue(day, "snackExtra");
     return `<div class="detail-choice"><small>嘴馋时额外选择</small><div class="choice-row compact" role="radiogroup" aria-label="嘴馋加餐选择">${SNACK_EXTRA_CHOICES.map((choice) => `
       <label class="choice-chip"><input type="radio" name="snack-extra-${selectedDay}" data-detail-choice="snackExtra" value="${choice.value}" ${selected === choice.value ? "checked" : ""}><span>${choice.label}<em>${choice.calories ? `+${choice.calories}` : "0"}</em></span></label>`).join("")}</div></div>`;
+  }
+  return "";
+}
+
+function componentMarkup(task, day) {
+  if (task.id === "breakfast") {
+    const drink = DRINK_CHOICES.find((item) => item.value === choiceValue(day, "drink"));
+    return `<p class="calorie-components">鸡蛋 72＋${drink.label} ${drink.calories} kcal</p>`;
+  }
+  if (task.id === "lunch") {
+    if (choiceValue(day, "lunch") === "burger") return `<p class="calorie-components">定制汉堡整份约 310 kcal</p>`;
+    const meatCalories = { chicken: 165, beef: 250, fish: 105, shrimp: 99 }[choiceValue(day, "protein")];
+    return `<p class="calorie-components">蔬菜 105＋米饭 195＋肉 ${meatCalories}＋油 45 kcal</p>`;
+  }
+  if (task.id === "snack") {
+    const extra = choiceValue(day, "snackExtra");
+    const extraText = extra === "chocolate" ? "＋黑巧 60" : extra === "egg" ? "＋溏心蛋 72" : "";
+    return `<p class="calorie-components">冰拿铁 122＋杏仁 87${extraText} kcal</p>`;
   }
   return "";
 }
@@ -230,6 +259,7 @@ function renderPlan() {
       </label>
       ${choiceMarkup(task, day)}
       ${detailChoiceMarkup(task, day)}
+      ${componentMarkup(task, day)}
     </div>`).join("");
 
   $("#calorieSummary").innerHTML = calorieSummaryMarkup(day);
