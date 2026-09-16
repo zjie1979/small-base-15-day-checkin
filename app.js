@@ -17,8 +17,8 @@ const FOOD_TASK_IDS = new Set(["breakfast", "lunch", "dinner", "snack"]);
 const CALORIES = {
   breakfast: { egg: 72, drinks: { plain: 0, soy: 83, milk: 153 } },
   lunch: {
-    burger: 310,
-    fists: { chicken: 510, beef: 595, fish: 450, shrimp: 444 }
+    burger: 450,
+    fists: { chicken: 450, beef: 450, fish: 450, shrimp: 450 }
   },
   snack: { base: 209, none: 0, chocolate: 60, egg: 72 },
   dinner: { banana: 71, egg: 72, corn: 96 }
@@ -26,7 +26,7 @@ const CALORIES = {
 
 const CHOICES = {
   lunch: [
-    { value: "burger", label: "麦门双吉（去芝士、去酱）", calories: 310 },
+    { value: "burger", label: "麦门双吉（去芝士、去酱）", calories: 450 },
     { value: "fists", label: "两拳菜＋一拳肉＋一拳饭" }
   ],
   dinner: [
@@ -37,10 +37,10 @@ const CHOICES = {
 };
 
 const PROTEIN_CHOICES = [
-  { value: "chicken", label: "鸡肉", calories: 510 },
-  { value: "beef", label: "牛肉", calories: 595 },
+  { value: "chicken", label: "鸡肉", calories: 450 },
+  { value: "beef", label: "牛肉", calories: 450 },
   { value: "fish", label: "鱼肉", calories: 450 },
-  { value: "shrimp", label: "虾", calories: 444 }
+  { value: "shrimp", label: "虾", calories: 450 }
 ];
 
 const DRINK_CHOICES = [
@@ -220,9 +220,8 @@ function componentMarkup(task, day) {
     return `<p class="calorie-components">鸡蛋 72＋${drink.label} ${drink.calories} kcal</p>`;
   }
   if (task.id === "lunch") {
-    if (choiceValue(day, "lunch") === "burger") return `<p class="calorie-components">定制汉堡整份约 310 kcal</p>`;
-    const meatCalories = { chicken: 165, beef: 250, fish: 105, shrimp: 99 }[choiceValue(day, "protein")];
-    return `<p class="calorie-components">蔬菜 105＋米饭 195＋肉 ${meatCalories}＋油 45 kcal</p>`;
+    if (choiceValue(day, "lunch") === "burger") return `<p class="calorie-components">定制汉堡整份约 450 kcal</p>`;
+    return `<p class="calorie-components">两拳蔬菜＋一拳肉＋一拳饭，整餐统一按约 450 kcal</p>`;
   }
   if (task.id === "snack") {
     const extra = choiceValue(day, "snackExtra");
