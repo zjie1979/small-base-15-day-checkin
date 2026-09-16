@@ -4,7 +4,7 @@ const DAY_COUNT = 15;
 const TASKS = [
   { id: "breakfast", label: "早餐", detail: "一个鸡蛋＋一杯无糖饮品", icon: "🥚" },
   { id: "lunch", label: "午餐", detail: "双吉汉堡，或 2拳菜＋1拳肉＋1拳饭", icon: "🍔", choice: "lunch" },
-  { id: "snack", label: "下午", detail: "冰拿铁＋适量坚果", icon: "☕️" },
+  { id: "snack", label: "晚上 8:00", detail: "冰拿铁＋适量坚果", icon: "☕️" },
   { id: "dinner", label: "晚餐", detail: "小香蕉／鸡蛋／玉米，三选一", icon: "🍌", choice: "dinner" },
   { id: "water", label: "喝水", detail: "全天累计 1.5L", icon: "💧" },
   { id: "sleep", label: "睡眠", detail: "23:30 前睡觉", icon: "🌙" },
