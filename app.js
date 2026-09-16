@@ -4,14 +4,14 @@ const DAY_COUNT = 15;
 const TASKS = [
   { id: "breakfast", label: "早餐", detail: "一个鸡蛋＋一杯无糖饮品", icon: "🥚" },
   { id: "lunch", label: "午餐", detail: "双吉汉堡，或 2拳菜＋1拳肉＋1拳饭", icon: "🍔", choice: "lunch" },
-  { id: "snack", label: "晚上 8:00", detail: "冰拿铁＋适量坚果", icon: "☕️" },
-  { id: "dinner", label: "晚餐", detail: "小香蕉／鸡蛋／玉米，三选一", icon: "🍌", choice: "dinner" },
+  { id: "dinner", label: "晚餐 18:30–19:00", detail: "小香蕉／鸡蛋／玉米，三选一", icon: "🍌", choice: "dinner" },
+  { id: "snack", label: "晚上 20:00", detail: "冰拿铁＋适量坚果", icon: "☕️" },
   { id: "water", label: "喝水", detail: "全天累计 1.5L", icon: "💧" },
   { id: "sleep", label: "睡眠", detail: "23:30 前睡觉", icon: "🌙" },
   { id: "stretch", label: "拉伸", detail: "睡前完成拉伸", icon: "🧘" }
 ];
 
-const FOOD_TASK_IDS = new Set(["breakfast", "lunch", "snack", "dinner"]);
+const FOOD_TASK_IDS = new Set(["breakfast", "lunch", "dinner", "snack"]);
 
 // 热量均为估算值；份量口径和来源在“方法”页公开说明。
 const CALORIES = {
@@ -236,7 +236,7 @@ function calorieSummaryMarkup(day) {
   const checkedFoods = TASKS.filter((task) => FOOD_TASK_IDS.has(task.id) && day.checks[task.id]);
   const breakdown = checkedFoods.length
     ? checkedFoods.map((task) => `<span>${task.label}<b>≈${taskCalories(task.id, day)}</b></span>`).join("")
-    : `<p>勾选早餐、午餐、晚上 8:00 或晚餐后开始累计。</p>`;
+    : `<p>勾选早餐、午餐、晚餐或晚上 20:00 后开始累计。</p>`;
   return `<section class="calorie-summary" aria-live="polite">
     <div class="calorie-total"><span>已打卡热量</span><strong>≈${checkedCalories(day)}<small>kcal</small></strong></div>
     <div class="calorie-breakdown">${breakdown}</div>
