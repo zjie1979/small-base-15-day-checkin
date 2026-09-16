@@ -4,7 +4,7 @@ const DAY_COUNT = 15;
 const TASKS = [
   { id: "breakfast", label: "早餐", detail: "一个鸡蛋＋一杯无糖饮品", icon: "🥚" },
   { id: "lunch", label: "午餐", detail: "双吉汉堡，或 2拳菜＋1拳肉＋1拳饭", icon: "🍔", choice: "lunch" },
-  { id: "dinner", label: "晚餐 18:30–19:00", detail: "小香蕉／鸡蛋／玉米，三选一", icon: "🍌", choice: "dinner" },
+  { id: "dinner", label: "晚餐 18:30–19:00", detail: "小香蕉／鸡蛋／玉米／馒头，四选一", icon: "🍌", choice: "dinner" },
   { id: "snack", label: "晚上 20:00", detail: "冰拿铁＋适量坚果", icon: "☕️" },
   { id: "water", label: "喝水", detail: "全天累计 1.5L", icon: "💧" },
   { id: "sleep", label: "睡眠", detail: "23:30 前睡觉", icon: "🌙" },
@@ -21,7 +21,7 @@ const CALORIES = {
     fists: { chicken: 450, beef: 450, fish: 450, shrimp: 450 }
   },
   snack: { base: 209, none: 0, chocolate: 60, egg: 72 },
-  dinner: { banana: 71, egg: 72, corn: 96 }
+  dinner: { banana: 71, egg: 72, corn: 96, mantou: 268 }
 };
 
 const CHOICES = {
@@ -32,7 +32,8 @@ const CHOICES = {
   dinner: [
     { value: "banana", label: "小香蕉", calories: 71 },
     { value: "egg", label: "鸡蛋", calories: 72 },
-    { value: "corn", label: "玉米", calories: 96 }
+    { value: "corn", label: "玉米", calories: 96 },
+    { value: "mantou", label: "馒头 120g", calories: 268 }
   ]
 };
 
