@@ -87,10 +87,30 @@ button { color: inherit; }
 .meal-copy b, .meal-copy small { display: block; }
 .meal-copy b { font-size: 13px; }
 .meal-copy small { margin-top: 3px; color: var(--muted); font-size: 10px; line-height: 1.4; }
+.meal-title { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.meal-title b { min-width: 0; }
+.meal-title em { flex: 0 0 auto; padding: 3px 6px; border-radius: 999px; color: #7b5067; background: #f6e7ee; font-size: 8px; font-style: normal; font-weight: 850; }
+.meal-item.checked .meal-title em { color: #446453; background: rgba(255,255,255,.72); }
 .choice-row { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px 12px 76px; }
 .choice-chip { position: relative; }
 .choice-chip span { display: block; padding: 6px 9px; border: 1px solid rgba(51,35,49,.1); border-radius: 10px; color: var(--muted); background: rgba(255,255,255,.76); font-size: 9px; font-weight: 700; line-height: 1.35; }
+.choice-chip em { display: block; margin-top: 2px; color: inherit; font-size: 8px; font-style: normal; opacity: .78; }
 .choice-chip input:checked + span { color: #fff; border-color: var(--plum); background: var(--plum); }
+.detail-choice { padding: 1px 12px 12px 76px; }
+.detail-choice > small { display: block; margin-bottom: 6px; color: var(--muted); font-size: 8px; font-weight: 750; }
+.choice-row.compact { padding: 0; }
+.choice-row.compact .choice-chip span { min-width: 50px; text-align: center; }
+.calorie-summary { margin-top: 16px; padding: 16px; border: 1px solid rgba(104,68,95,.1); border-radius: 19px; background: linear-gradient(145deg, #fff7ee, #f9edf3); }
+.calorie-total { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.calorie-total > span { color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .08em; }
+.calorie-total strong { font-size: 23px; letter-spacing: -.03em; }
+.calorie-total strong small { margin-left: 4px; color: var(--muted); font-size: 9px; letter-spacing: 0; }
+.calorie-breakdown { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.calorie-breakdown span { padding: 5px 7px; border-radius: 9px; color: #66515f; background: rgba(255,255,255,.72); font-size: 8px; }
+.calorie-breakdown span b { margin-left: 4px; }
+.calorie-breakdown p { margin: 0; color: var(--muted); font-size: 9px; line-height: 1.5; }
+.planned-total { margin-top: 10px; padding-top: 9px; border-top: 1px solid rgba(51,35,49,.08); color: var(--muted); font-size: 9px; }
+.planned-total b { color: var(--ink); }
 .day-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 17px; padding-top: 15px; border-top: 1px solid var(--line); }
 .day-footer p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.45; }
 .day-footer strong { flex: 0 0 auto; font-size: 13px; }
@@ -151,6 +171,10 @@ button { color: inherit; }
 .info-card ul { margin: 12px 0; padding-left: 19px; color: #61545d; font-size: 11px; line-height: 1.75; }
 .source-link { display: inline-flex; margin-top: 3px; color: var(--ink); font-size: 11px; font-weight: 800; }
 .supplement-card { background: #fff9f2; }
+.calorie-method-card { background: #fffdf8; }
+.calorie-method-list b { color: var(--ink); }
+.estimate-note { padding: 9px 11px; border-radius: 12px; background: #f5eef1; }
+.source-row { display: flex; flex-wrap: wrap; gap: 6px 12px; }
 .safety-card { border-color: rgba(158,91,111,.14); background: #fff7f8; }
 .data-card { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .data-card p { margin: 5px 0 0; }
@@ -177,5 +201,5 @@ dialog::backdrop { background: rgba(35,23,33,.47); backdrop-filter: blur(5px); }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
 @media (min-width: 541px) { body { padding: 18px 0; } .app-shell { border-radius: 34px; } }
-@media (max-width: 360px) { .hero-card { padding: 19px; } .progress-orbit { width: 70px; height: 70px; flex-basis: 70px; } .choice-row { padding-left: 47px; } }
+@media (max-width: 360px) { .hero-card { padding: 19px; } .progress-orbit { width: 70px; height: 70px; flex-basis: 70px; } .choice-row { padding-left: 47px; } .choice-row.compact { padding-left: 0; } .detail-choice { padding-left: 47px; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; } }

@@ -11,17 +11,43 @@ const TASKS = [
   { id: "stretch", label: "拉伸", detail: "睡前完成拉伸", icon: "🧘" }
 ];
 
+const FOOD_TASK_IDS = new Set(["breakfast", "lunch", "snack", "dinner"]);
+
+// 热量均为估算值；份量口径和来源在“方法”页公开说明。
+const CALORIES = {
+  breakfast: 72,
+  lunch: {
+    burger: 310,
+    fists: { chicken: 510, beef: 595, fish: 450, shrimp: 444 }
+  },
+  snack: { base: 209, none: 0, chocolate: 60, egg: 72 },
+  dinner: { banana: 71, egg: 72, corn: 96 }
+};
+
 const CHOICES = {
   lunch: [
-    { value: "burger", label: "麦门双吉汉堡（去芝士、去酱）" },
-    { value: "fists", label: "两拳蔬菜＋一拳肉＋一拳饭" }
+    { value: "burger", label: "麦门双吉（去芝士、去酱）", calories: 310 },
+    { value: "fists", label: "两拳菜＋一拳肉＋一拳饭" }
   ],
   dinner: [
-    { value: "banana", label: "小香蕉" },
-    { value: "egg", label: "鸡蛋" },
-    { value: "corn", label: "玉米" }
+    { value: "banana", label: "小香蕉", calories: 71 },
+    { value: "egg", label: "鸡蛋", calories: 72 },
+    { value: "corn", label: "玉米", calories: 96 }
   ]
 };
+
+const PROTEIN_CHOICES = [
+  { value: "chicken", label: "鸡肉", calories: 510 },
+  { value: "beef", label: "牛肉", calories: 595 },
+  { value: "fish", label: "鱼肉", calories: 450 },
+  { value: "shrimp", label: "虾", calories: 444 }
+];
+
+const SNACK_EXTRA_CHOICES = [
+  { value: "none", label: "不额外吃", calories: 0 },
+  { value: "chocolate", label: "黑巧 10g", calories: 60 },
+  { value: "egg", label: "溏心蛋 1个", calories: 72 }
+];
 
 const todayKey = () => localDateKey(new Date());
 const defaultState = () => ({ version: 1, startDate: todayKey(), unit: "jin", days: {}, weights: {} });
@@ -94,6 +120,30 @@ function completedDays() {
   return Array.from({ length: DAY_COUNT }, (_, index) => dayCompleted(index)).filter(Boolean).length;
 }
 
+function choiceValue(day, name) {
+  const defaults = { lunch: "burger", protein: "chicken", snackExtra: "none", dinner: "banana" };
+  return day.choices[name] || defaults[name];
+}
+
+function taskCalories(taskId, day) {
+  if (taskId === "breakfast") return CALORIES.breakfast;
+  if (taskId === "lunch") {
+    const lunch = choiceValue(day, "lunch");
+    return lunch === "fists" ? CALORIES.lunch.fists[choiceValue(day, "protein")] : CALORIES.lunch.burger;
+  }
+  if (taskId === "snack") return CALORIES.snack.base + CALORIES.snack[choiceValue(day, "snackExtra")];
+  if (taskId === "dinner") return CALORIES.dinner[choiceValue(day, "dinner")];
+  return 0;
+}
+
+function checkedCalories(day) {
+  return TASKS.reduce((sum, task) => sum + (FOOD_TASK_IDS.has(task.id) && day.checks[task.id] ? taskCalories(task.id, day) : 0), 0);
+}
+
+function plannedCalories(day) {
+  return [...FOOD_TASK_IDS].reduce((sum, taskId) => sum + taskCalories(taskId, day), 0);
+}
+
 function renderAll() {
   renderHeader();
   renderDayGrid();
@@ -131,11 +181,38 @@ function renderDayGrid() {
 
 function choiceMarkup(task, day) {
   if (!task.choice) return "";
+  const selected = choiceValue(day, task.choice);
   return `<div class="choice-row" role="radiogroup" aria-label="${task.label}选择">${CHOICES[task.choice].map((choice) => `
     <label class="choice-chip">
-      <input type="radio" name="${task.choice}-${selectedDay}" data-choice="${task.choice}" value="${choice.value}" ${day.choices[task.choice] === choice.value ? "checked" : ""}>
-      <span>${choice.label}</span>
+      <input type="radio" name="${task.choice}-${selectedDay}" data-choice="${task.choice}" value="${choice.value}" ${selected === choice.value ? "checked" : ""}>
+      <span>${choice.label}${choice.calories ? `<em>≈${choice.calories} kcal</em>` : ""}</span>
     </label>`).join("")}</div>`;
+}
+
+function detailChoiceMarkup(task, day) {
+  if (task.id === "lunch" && choiceValue(day, "lunch") === "fists") {
+    const selected = choiceValue(day, "protein");
+    return `<div class="detail-choice"><small>一拳肉选择（总餐热量）</small><div class="choice-row compact" role="radiogroup" aria-label="一拳肉选择">${PROTEIN_CHOICES.map((choice) => `
+      <label class="choice-chip"><input type="radio" name="protein-${selectedDay}" data-detail-choice="protein" value="${choice.value}" ${selected === choice.value ? "checked" : ""}><span>${choice.label}<em>≈${choice.calories}</em></span></label>`).join("")}</div></div>`;
+  }
+  if (task.id === "snack") {
+    const selected = choiceValue(day, "snackExtra");
+    return `<div class="detail-choice"><small>嘴馋时额外选择</small><div class="choice-row compact" role="radiogroup" aria-label="嘴馋加餐选择">${SNACK_EXTRA_CHOICES.map((choice) => `
+      <label class="choice-chip"><input type="radio" name="snack-extra-${selectedDay}" data-detail-choice="snackExtra" value="${choice.value}" ${selected === choice.value ? "checked" : ""}><span>${choice.label}<em>${choice.calories ? `+${choice.calories}` : "0"}</em></span></label>`).join("")}</div></div>`;
+  }
+  return "";
+}
+
+function calorieSummaryMarkup(day) {
+  const checkedFoods = TASKS.filter((task) => FOOD_TASK_IDS.has(task.id) && day.checks[task.id]);
+  const breakdown = checkedFoods.length
+    ? checkedFoods.map((task) => `<span>${task.label}<b>≈${taskCalories(task.id, day)}</b></span>`).join("")
+    : `<p>勾选早餐、午餐、晚上 8:00 或晚餐后开始累计。</p>`;
+  return `<section class="calorie-summary" aria-live="polite">
+    <div class="calorie-total"><span>已打卡热量</span><strong>≈${checkedCalories(day)}<small>kcal</small></strong></div>
+    <div class="calorie-breakdown">${breakdown}</div>
+    <div class="planned-total">按当前选择，四项全部打卡约 <b>${plannedCalories(day)} kcal</b></div>
+  </section>`;
 }
 
 function renderPlan() {
@@ -149,10 +226,13 @@ function renderPlan() {
         <input type="checkbox" data-task="${task.id}" ${day.checks[task.id] ? "checked" : ""}>
         <span class="task-check">✓</span>
         <span class="meal-icon" aria-hidden="true">${task.icon}</span>
-        <span class="meal-copy"><b>${task.label}</b><small>${task.detail}</small></span>
+        <span class="meal-copy"><span class="meal-title"><b>${task.label}</b>${FOOD_TASK_IDS.has(task.id) ? `<em>≈${taskCalories(task.id, day)} kcal</em>` : ""}</span><small>${task.detail}</small></span>
       </label>
       ${choiceMarkup(task, day)}
+      ${detailChoiceMarkup(task, day)}
     </div>`).join("");
+
+  $("#calorieSummary").innerHTML = calorieSummaryMarkup(day);
 
   $("#dayCount").textContent = `${TASKS.filter((task) => day.checks[task.id]).length}/${TASKS.length}`;
 
@@ -171,6 +251,14 @@ function renderPlan() {
     saveState();
     renderAll();
     showToast("选择已记录");
+  }));
+
+  $$("#mealList [data-detail-choice]").forEach((input) => input.addEventListener("change", () => {
+    const dayState = ensureDay(selectedDay);
+    dayState.choices[input.dataset.detailChoice] = input.value;
+    saveState();
+    renderAll();
+    showToast("热量选项已更新");
   }));
 }
 
@@ -248,9 +336,10 @@ function renderProgress() {
     const count = TASKS.filter((task) => day.checks[task.id]).length;
     const doneDay = dayCompleted(index);
     const weight = state.weights[index];
+    const calories = checkedCalories(day);
     return `<button type="button" class="progress-item card ${doneDay ? "done" : ""}" data-open-day="${index}">
       <span class="progress-number">${doneDay ? "✓" : index + 1}</span>
-      <span class="progress-copy"><b>第 ${index + 1} 天</b><small>${dayDateLabel(index)} · ${count}/${TASKS.length} 项</small></span>
+      <span class="progress-copy"><b>第 ${index + 1} 天</b><small>${dayDateLabel(index)} · ${count}/${TASKS.length} 项${calories ? ` · ≈${calories} kcal` : ""}</small></span>
       <span class="progress-weight">${weight ? `${displayWeight(weight.kg)} ${weightUnit()}` : "—"}</span>
     </button>`;
   }).join("");

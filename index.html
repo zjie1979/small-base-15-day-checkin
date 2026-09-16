@@ -11,7 +11,7 @@
     <link rel="manifest" href="./manifest.webmanifest">
     <link rel="icon" href="./icons/icon-192.png">
     <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
-    <link rel="stylesheet" href="./styles.css?v=20260916a">
+    <link rel="stylesheet" href="./styles.css?v=20260916b">
     <title>小基数15天｜霸道食谱打卡</title>
   </head>
   <body>
@@ -53,6 +53,8 @@
             </div>
 
             <div class="meal-list" id="mealList"></div>
+
+            <div id="calorieSummary"></div>
 
             <div class="day-footer">
               <p>有氧是原帖里的可选项，不计入当天完成度。</p>
@@ -136,9 +138,27 @@
             <a class="source-link" href="https://www.xiaohongshu.com/explore/69d8c6320000000022026dc7" target="_blank" rel="noopener">查看小红书原帖 ↗</a>
           </article>
 
+          <article class="info-card card calorie-method-card">
+            <h3>热量估算口径</h3>
+            <p>热量只统计帖子列出的食物，并按下面的固定份量换算；“≈”表示估算，不是营养目标。</p>
+            <ul class="calorie-method-list">
+              <li><b>早餐 ≈72 kcal：</b>大鸡蛋 1 个；无糖饮品按白水、无糖茶或黑咖啡 0 kcal 计算。</li>
+              <li><b>去芝士去酱双吉 ≈310 kcal：</b>麦当劳中国标准双层吉士汉堡为 1796 kJ（约 429 kcal），再扣除芝士和酱料的估算值。</li>
+              <li><b>拳头餐 ≈444–595 kcal：</b>蔬菜 300g＋熟米饭 150g＋熟肉 100g＋烹调油 5g；按鸡肉、牛肉、鱼肉或虾分别计算。</li>
+              <li><b>冰拿铁＋坚果 ≈209 kcal：</b>无糖冰拿铁按全脂奶 200ml，坚果按杏仁 15g；黑巧 10g 另加约 60 kcal，溏心蛋另加 72 kcal。</li>
+              <li><b>晚餐：</b>小香蕉按可食部 80g，约 71 kcal；鸡蛋 72 kcal；熟玉米粒 100g，约 96 kcal。</li>
+            </ul>
+            <p class="estimate-note">品牌、实际克数和烹调油会让结果明显变化，尤其“拳头”和“适量”不是精确称重单位。</p>
+            <div class="source-row">
+              <a class="source-link" href="https://fdc.nal.usda.gov/" target="_blank" rel="noopener">USDA FoodData Central ↗</a>
+              <a class="source-link" href="https://fdc.nal.usda.gov/food-search/?query=egg%20whole%20cooked" target="_blank" rel="noopener">USDA 鸡蛋检索 ↗</a>
+              <a class="source-link" href="https://www.mcdonalds.com.cn/product/double-cheeseburger" target="_blank" rel="noopener">麦当劳中国营养数据 ↗</a>
+            </div>
+          </article>
+
           <article class="info-card card safety-card">
             <h3>开始前请先看</h3>
-            <p>原帖没有提供总热量、蛋白质、身高体重和健康状况，因此无法确认这套食谱是否满足你的营养需要。美国 CDC 建议更可持续的减重速度通常约为每周 1–2 磅（约 0.45–0.9 kg）。</p>
+            <p>APP 显示的是“帖子食物估算热量”，不是建议摄入量。原帖没有提供蛋白质、身高体重和健康状况，因此无法确认这套食谱是否满足你的营养需要。美国 CDC 建议更可持续的减重速度通常约为每周 1–2 磅（约 0.45–0.9 kg）。</p>
             <p>未成年人、孕期或哺乳期、体重过低、有低血糖或进食障碍史、正在使用降糖药，或有需要饮食管理的疾病者，不应自行照搬。</p>
             <a class="source-link" href="https://www.cdc.gov/healthy-weight-growth/losing-weight/index.html" target="_blank" rel="noopener">查看 CDC 健康减重说明 ↗</a>
           </article>
@@ -187,6 +207,6 @@
     </dialog>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
-    <script src="./app.js?v=20260916a" defer></script>
+    <script src="./app.js?v=20260916b" defer></script>
   </body>
 </html>
